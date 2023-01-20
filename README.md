@@ -16,7 +16,7 @@ LCPChatBot is bot for chat powered by OpenAI ChatGPT and interact between user a
 **Note**: 
 Theres limitations and restrictions regarding about using this bot:
 1. [OpenAI API - Usage policies](https://beta.openai.com/docs/usage-policies)
-2. [OpenAI API - Rate limits)(https://beta.openai.com/docs/guides/rate-limits)
+2. [OpenAI API - Rate limits](https://beta.openai.com/docs/guides/rate-limits)
 
 **Note 2**: 
 If this bot isnt working, please report it in issues tab or send [email to me](carvalholuigi25@gmail.com).
