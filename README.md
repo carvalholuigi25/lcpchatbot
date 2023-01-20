@@ -1,10 +1,10 @@
-#LCPChatBot
+# LCPChatBot
 
-[LCPChatBot Main Logo](./assets/images/png/logo-no-background.png)
+![LCPChatBot Main Logo](./assets/images/png/logo-no-background.png)
 
 LCPChatBot is bot for chat powered by OpenAI ChatGPT and interact between user and AI for the server of discord Luigi Gaming'n'Tech (or for your server), created by Luis "Luigi" Carvalho in 2023.
 
-**Usage:**
+## **Usage:**
 
 1. Clone or download this project;
 2. Go to this project and install it (npm install);
@@ -21,7 +21,7 @@ Theres limitations and restrictions regarding about using this bot:
 **Note 2**: 
 If this bot isnt working, please report it in issues tab or send [email to me](carvalholuigi25@gmail.com).
 
-**License**:
+## **License**:
 
 Copyright 2023 &copy; LCP
 
