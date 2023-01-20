@@ -1,0 +1,18 @@
+{
+  "name": "lcpchatbot",
+  "version": "1.0.0",
+  "description": "LCPChatBot is bot for chat and interact between user and AI for the server of discord Luigi Gaming'n'Tech",
+  "main": "index.js",
+  "scripts": {
+    "start": "node bot.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Luigi Carvalho (luiscarvalho239@gmail.com or carvalholuigi25@gmail.com)",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "openai": "^3.1.0"
+  }
+}
