@@ -1,18 +1,22 @@
 # LCPChatBot
 
 <!-- ![LCPChatBot Main Logo](./assets/images/png/logo-no-background.png "LCPChatBot Main Logo") -->
-<img src="./assets/images/png/logo-no-background.png" width="500" height="563" alt="LCPChatBot Main Logo" title="LCPChatBot Main Logo" style="display: block; margin: 0 auto;" />
+<img src="./assets/images/png/logo-no-background.png" width="500" height="563" alt="LCPChatBot Main Logo" title="LCPChatBot Main Logo" style="display: block; margin: 0 auto; text-align: center;" />
 
 LCPChatBot is bot for chat powered by OpenAI ChatGPT and interact between user and AI for the server of discord Luigi Gaming'n'Tech (or for your server), created by Luis "Luigi" Carvalho in 2023.
 
 ## **Usage:**
 
-1. Clone or download this project;
-2. Go to this project and install it (npm install);
-3. Execute the command: npm run start;
-4. After starting, if it works and gets the status online, then use to talk bot: 
+> 
+> 1. Clone or download this project;
+> 2. Go to this project and install it (npm install);
+> 3. Execute the command: npm run start;
+> 4. After starting, if it works and gets the status online, then use to talk bot: 
+> 
 
-!chatbox <msg> or !cb <msg> (replace <msg> to your message, if it stops, use the keyword "continue" or "Continue").
+`
+    !chatbox <msg> or !cb <msg> (replace <msg> to your message, if it stops, use the keyword "continue" or "Continue").
+`
 
 **Note**: 
 Theres limitations and restrictions regarding about using this bot:
