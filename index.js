@@ -4,6 +4,8 @@ require('dotenv').config();
 const token = process.env.mytoken;
 const { ask } = require("./ai.js");
 const { Client, Events, GatewayIntentBits, ActivityType } = require("discord.js");
+// const server = require("./server.js");
+const keep_alive = require("./keep_alive.js");
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
