@@ -26,7 +26,7 @@ Theres limitations and restrictions regarding about using this bot:
 2. [OpenAI API - Rate limits](https://beta.openai.com/docs/guides/rate-limits)
 
 **Note 2**: 
-If this bot isnt working, please report it in [issues](https://github.com/carvalholuigi25/lcpchatbot/issues) tab or send [email to me](carvalholuigi25@gmail.com).
+If this bot isnt working, please report it in [issues](https://github.com/carvalholuigi25/lcpchatbot/issues) tab or send [email to me](mailto:carvalholuigi25@gmail.com).
 
 ## **License**:
 
