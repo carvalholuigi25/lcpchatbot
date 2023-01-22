@@ -4,7 +4,7 @@
   "description": "LCPChatBot is bot for chat and interact between user and AI for the server of discord Luigi Gaming'n'Tech",
   "main": "index.js",
   "scripts": {
-    "start": "node bot.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
