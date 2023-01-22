@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({
-    apiKey: process.env.opaitoken,
+  apiKey: process.env.opaitoken,
 });
 const openai = new OpenAIApi(configuration);
 
@@ -18,11 +18,11 @@ async function createResp(prompt, isContinue = false) {
   return await openai.createCompletion({
     model: "text-davinci-003",
     prompt,
-    temperature: isContinue ? 0.7 : 0,
+    temperature: isContinue ? 0.7 : 0.5,
     max_tokens: isContinue ? 512 : 256,
     top_p: 1,
-    frequency_penalty: 1,
-    presence_penalty: 1,
+    frequency_penalty: 0,
+    presence_penalty: 0
   });
 }
 
@@ -44,5 +44,6 @@ async function ask(prompt) {
 }
 //Ask an example question
 module.exports = {
-    ask,
+  ask,
+  isValIncase
 };
