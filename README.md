@@ -5,7 +5,7 @@
     <img src="./assets/images/png/logo-no-background.png" width="500" height="auto" alt="LCPChatBot Main Logo" title="LCPChatBot Main Logo" style="display: block; margin: 0 auto; max-width: 100%; max-height: 100%;" />
 </p>
 
-LCPChatBot is bot for chat powered by OpenAI ChatGPT and interact between user and AI for the server of discord Luigi Gaming'n'Tech (or for your server), created by Luis "Luigi" Carvalho in 2023.
+LCPChatBot is bot for chat powered by OpenAI and interact between user and AI for the server of discord Luigi Gaming'n'Tech (or for your server), created by Luis "Luigi" Carvalho in 2023.
 
 ## **Usage:**
 
