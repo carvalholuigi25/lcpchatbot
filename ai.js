@@ -7,40 +7,42 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 function isValIncase(astr, prompt) {
-  const isContained = astr.some(element => {
+  const isVal = astr.some(element => {
     return element.toLowerCase() === prompt.toLowerCase();
   });
 
-  return isContained;
+  return isVal;
 }
 
-async function createResp(prompt, isContinue = false) {
+async function createResp(prompt) {
   return await openai.createCompletion({
     model: "text-davinci-003",
     prompt,
-    temperature: isContinue ? 0.7 : 0.5,
-    max_tokens: isContinue ? 512 : 256,
+    temperature: 0.7,
+    max_tokens: 512,
     top_p: 1,
-    frequency_penalty: 0,
-    presence_penalty: 0
+    frequency_penalty: 0.0,
+    presence_penalty: 0.0
   });
 }
 
 async function ask(prompt) {
-  var response = ""; var answer = "";
-  var n = 0; var max = 1000;
-
-  if(isValIncase(["continue"], prompt)) {
-    while(n < max) {
-      response = await createResp(prompt, true);
-      answer += response.data.choices[0].text;
-    }  
+  var answer = "";
+  var aryv = ["continue", "continue "];
+  var mpromptr = isValIncase(aryv, prompt) ? prompt.replace("continue ", "") : prompt;
+  var promptr = isValIncase(aryv, prompt) ? "continue " + mpromptr : prompt;
+  var response = await createResp(promptr);
+  
+  if(isValIncase(aryv, promptr)) {
+    answer = `\n Continuing: \n`;
+    response.data.choices.forEach(({ text }) => {
+      answer += text;
+    });
   } else {
-    response = await createResp(prompt, false);
     answer = response.data.choices[0].text;
   }
 
-  return answer;
+  return answer.trim();
 }
 //Ask an example question
 module.exports = {

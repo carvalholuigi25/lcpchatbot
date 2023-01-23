@@ -88,4 +88,8 @@ client.on("messageCreate", async message => {
   }
 });
 
+client.on("error", (err) => {
+  console.error(err);
+});
+
 client.login(token);
