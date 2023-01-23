@@ -28,13 +28,10 @@ async function createResp(prompt) {
 
 async function ask(prompt) {
   var answer = "";
-  var aryv = ["continue", "continue "];
-  var mpromptr = isValIncase(aryv, prompt) ? prompt.replace("continue ", "") : prompt;
-  var promptr = isValIncase(aryv, prompt) ? "continue " + mpromptr : prompt;
-  var response = await createResp(promptr);
+  var response = await createResp(prompt);
   
-  if(isValIncase(aryv, promptr)) {
-    answer = `\n Continuing: \n`;
+  if(prompt.indexOf("continue") !== -1) {
+    answer = `\nContinuing: `;
     response.data.choices.forEach(({ text }) => {
       answer += text;
     });
@@ -44,7 +41,7 @@ async function ask(prompt) {
 
   return answer.trim();
 }
-//Ask an example question
+
 module.exports = {
   ask,
   isValIncase

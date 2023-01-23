@@ -20,6 +20,12 @@ async function SendMsg(client, message, cmd, prefix = "!") {
   if (message.content.includes(cmd)) {
     const prompt = message.content.substring(cmd.length);
     const answer = await ask(prompt);
+    
+    if(answer.length >= 2000) {
+      console.log("The message cannot be sent because this exceeded to 2000 max chars!");
+      return;
+    }
+    
     client.channels.fetch(message.channelId).then(channel => channel.send(answer));
   }
 }
