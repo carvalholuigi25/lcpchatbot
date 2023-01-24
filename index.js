@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const token = process.env.mytoken;
 const { ask, isValIncase } = require("./ai.js");
-const { Client, GatewayIntentBits, ActivityType } = require("discord.js");
+const { Client, GatewayIntentBits, ActivityType, AttachmentBuilder } = require("discord.js");
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -22,11 +22,11 @@ async function SendMsg(client, message, cmd, prefix = "!") {
     const answer = await ask(prompt);
     
     if(answer.length >= 2000) {
-      console.log("The message cannot be sent because this exceeded to 2000 max chars!");
-      return;
+      const attachment = new AttachmentBuilder(Buffer.from(answer, 'utf-8'), { name: 'response.txt' });
+      client.channels.fetch(message.channelId).then(channel => channel.send({ files: [attachment] }));
+    } else {
+      client.channels.fetch(message.channelId).then(channel => channel.send(answer));
     }
-    
-    client.channels.fetch(message.channelId).then(channel => channel.send(answer));
   }
 }
 
