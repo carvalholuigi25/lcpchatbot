@@ -20,14 +20,16 @@ async function SendMsg(client, message, cmd, prefix = "!") {
   if (message.content.includes(cmd)) {
     const prompt = message.content.substring(cmd.length);
     const answer = await ask(prompt);
-    message.channel.send("\nThe response is being generating. Wait for it until its finished!\n");
+    await SendTextToChannelAsync(client, message, "\nThe response is being generating. Wait for it until its finished!\n");
     
     if(answer.length >= 2000) {
       const attachment = new AttachmentBuilder(Buffer.from(answer, 'utf-8'), { name: 'response.txt' });
-      client.channels.fetch(message.channelId).then(channel => channel.send({ files: [attachment] }));
+      await SendTextToChannelAsync(client, message, { files: [attachment] });
     } else {
-      client.channels.fetch(message.channelId).then(channel => channel.send(answer));
+      await SendTextToChannelAsync(client, message, answer);
     }
+
+    await SendTextToChannelAsync(client, message, "\nThe answer has been generated!\n");
   }
 }
 
@@ -46,10 +48,10 @@ async function SendTextToChannelAsync(client, message, text) {
   channel.send(text);
 }
 
-function SendTextToChannelSync(client, message, text) {
-  message.channel.send(text);
-  //client.channels.fetch(message.channelId).then(channel => channel.send(text));
-}
+// function SendTextToChannelSync(client, message, text) {
+  // message.channel.send(text);
+  // client.channels.fetch(message.channelId).then(channel => channel.send(text));
+// }
 
 async function GetInitialCommands(client, message) { 
   const commandBody = message.content.slice("!".length);
@@ -92,6 +94,7 @@ client.on("messageCreate", async message => {
     await DoExecCmds(client, message, ["chatbot", "cb"], "!");
   } catch(err) {
     console.log(err);
+    await SendTextToChannelAsync(client, message, `\nError: ${err} \n`);
   }
 });
 
