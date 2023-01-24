@@ -20,16 +20,16 @@ async function SendMsg(client, message, cmd, prefix = "!") {
   if (message.content.includes(cmd)) {
     const prompt = message.content.substring(cmd.length);
     const answer = await ask(prompt);
-    await SendTextToChannelAsync(client, message, "\nThe response is being generating. Wait for it until its finished!\n");
+    SendTextToChannel(client, message, "\nThe response is being generating. Wait for it until its finished!\n");
     
     if(answer.length >= 2000) {
       const attachment = new AttachmentBuilder(Buffer.from(answer, 'utf-8'), { name: 'response.txt' });
-      await SendTextToChannelAsync(client, message, { files: [attachment] });
+      SendTextToChannel(client, message, { files: [attachment] });
     } else {
-      await SendTextToChannelAsync(client, message, answer);
+      SendTextToChannel(client, message, answer);
     }
 
-    await SendTextToChannelAsync(client, message, "\nThe answer has been generated!\n");
+    SendTextToChannel(client, message, "\nThe answer has been generated!\n");
   }
 }
 
@@ -46,6 +46,10 @@ async function DoExecCmds(client, message, cmd, prefix = "!") {
 async function SendTextToChannelAsync(client, message, text) {
   const channel = await client.channels.fetch(message.channel.id);
   channel.send(text);
+}
+
+function SendTextToChannel(client, message, text) {
+  client.channels.fetch(message.channelId).then(channel => channel.send(text));
 }
 
 // function SendTextToChannelSync(client, message, text) {
