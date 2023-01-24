@@ -21,28 +21,16 @@ async function SendMsg(client, message, cmd, prefix = "!", type = "text") {
     const prompt = message.content.substring(cmd.length);
     const resp = await ask(prompt, type);
 
-    if(type == "text") {
-      SendTextToChannel(client, message, "\nThe response is being generating. Wait for it until its finished!\n");
-    } else {
-      SendTextToChannel(client, message, "\nThe image is being generating. Wait for it until its finished!\n");
-    }
+    SendTextToChannel(client, message, "\nThe response is being generating. Wait for it until its finished!\n");
     
-    if(type == "text") {
-      if(resp.length >= 2000) {
-        const attachment = new AttachmentBuilder(Buffer.from(resp, 'utf-8'), { name: 'response.txt' });
-        SendTextToChannel(client, message, { files: [attachment] });
-      } else {
-        SendTextToChannel(client, message, resp);
-      }
+    if(resp.length >= 2000) {
+      const attachment = new AttachmentBuilder(Buffer.from(resp, 'utf-8'), { name: type == "text" ? "response.txt" : "response.zip" });
+      SendTextToChannel(client, message, { files: [attachment] });
     } else {
       SendTextToChannel(client, message, resp);
     }
 
-    if(type == "text") {
-      SendTextToChannel(client, message, "\nThe response has been generated!\n");
-    } else {
-      SendTextToChannel(client, message, "\nThe image has been generated!\n");
-    }
+    SendTextToChannel(client, message, "\nThe response has been generated!\n");
   }
 }
 
