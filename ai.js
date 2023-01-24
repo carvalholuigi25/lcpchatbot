@@ -17,11 +17,11 @@ function isValIncase(astr, prompt) {
 async function createResp(prompt, isMaxTokens = false, type = "text") {
   var modelobj = "";
   if(modelobj.indexOf("image") !== -1) {
-    modelobj = await openai.Image.create(
+    modelobj = await openai.createImage({
       prompt,
-      n=1,
-      size="1024x1024"
-    );
+      n: 1,
+      size: "1024x1024"
+    });
   } else {
     modelobj = await openai.createCompletion({
       model: "text-davinci-003",
