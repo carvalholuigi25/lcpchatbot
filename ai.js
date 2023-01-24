@@ -14,22 +14,32 @@ function isValIncase(astr, prompt) {
   return isVal;
 }
 
-async function createResp(prompt, isMaxTokens = false) {
-  return await openai.createCompletion({
-    model: "text-davinci-003",
-    prompt,
-    temperature: 0.9,
-    max_tokens: isMaxTokens ? 2048 : 512,
-    top_p: 1,
-    frequency_penalty: 0.0,
-    presence_penalty: 0.0,
-    stop: null
-  });
+async function createResp(prompt, isMaxTokens = false, type = "text") {
+  var modelobj = "";
+  if(modelobj.indexOf("image") !== -1) {
+    modelobj = await openai.Image.create(
+      prompt,
+      n=1,
+      size="1024x1024"
+    );
+  } else {
+    modelobj = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt,
+      temperature: 0.9,
+      max_tokens: isMaxTokens ? 2048 : 512,
+      top_p: 1,
+      frequency_penalty: 0.0,
+      presence_penalty: 0.0,
+      stop: null
+    });
+  }
+  return modelobj;
 }
 
-async function ask(prompt) {
+async function ask(prompt, type = "text") {
   var answer = "";
-  var response = await createResp(prompt, true);
+  var response = await createResp(prompt, true, type);
   
   if(prompt.indexOf("continue") !== -1) {
     answer = `\nContinuing: `;

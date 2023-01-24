@@ -19,7 +19,9 @@ async function SendMsg(client, message, cmd, prefix = "!") {
 
   if (message.content.includes(cmd)) {
     const prompt = message.content.substring(cmd.length);
-    const resp = await ask(prompt);
+    const type = ["cbimg", "chatbotimg"].includes(prompt) ? "image" : "text";
+    const resp = await ask(prompt, type);
+
     SendTextToChannel(client, message, "\nThe response is being generating. Wait for it until its finished!\n");
     
     if(resp.length >= 2000) {
@@ -57,15 +59,20 @@ function SendTextToChannel(client, message, text) {
   // client.channels.fetch(message.channelId).then(channel => channel.send(text));
 // }
 
-async function GetInitialCommands(client, message) { 
-  const commandBody = message.content.slice("!".length);
+function GetMyCommand(message, text = "!") {
+  const commandBody = message.content.slice(text.length);
   const args = commandBody.split(' ');
-  const command = args.shift().toLowerCase();
+  return args.shift().toLowerCase();
+}
+
+async function GetInitialCommands(client, message) { 
+  const command = GetMyCommand(message, "!");
   
   if(command === "help_chat") {
     await SendTextToChannelAsync(client, message, `
     Help:
     !cb <msg> or !chatbot <msg> - to talk with chatbot and get info from it
+    !cbimg <msg> or !chatbotimg <msg> - to talk with chatbot and get image from it
     !hello_chat - gets hello output message
     !time_chat - gets time output message
     !help_chat - get list of help commands`);
@@ -81,7 +88,7 @@ async function GetInitialCommands(client, message) {
 client.on("ready", () => {
   client.user.setPresence({
     activities: [{
-      name: 'LCPChatBot Playing !chatbot <msg> or !cb <msg>',
+      name: 'LCPChatBot Playing !help_chat or !cb or !cbimg',
       type: ActivityType.Playing
     }],
     status: 'online'
@@ -95,7 +102,7 @@ client.on("messageCreate", async message => {
   
   try {
     await GetInitialCommands(client, message);
-    await DoExecCmds(client, message, ["chatbot", "cb"], "!");
+    await DoExecCmds(client, message, ["chatbot", "cb", "chatbotimg", "cbimg"], "!");
   } catch(err) {
     console.log(err);
     await SendTextToChannelAsync(client, message, `\nError: ${err} \n`);
