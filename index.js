@@ -14,34 +14,45 @@ const client = new Client({
   ]
 });
 
-async function SendMsg(client, message, cmd, prefix = "!") {
+async function SendMsg(client, message, cmd, prefix = "!", type = "text") {
   cmd = !cmd.includes(prefix) ? prefix + cmd : cmd;
 
   if (message.content.includes(cmd)) {
     const prompt = message.content.substring(cmd.length);
-    const type = cmd == "cbimg" || cmd == "chatbotimg" ? "image" : "text";
     const resp = await ask(prompt, type);
 
-    SendTextToChannel(client, message, "\nThe response is being generating. Wait for it until its finished!\n");
+    if(type == "text") {
+      SendTextToChannel(client, message, "\nThe response is being generating. Wait for it until its finished!\n");
+    } else {
+      SendTextToChannel(client, message, "\nThe image is being generating. Wait for it until its finished!\n");
+    }
     
-    if(resp.length >= 2000) {
-      const attachment = new AttachmentBuilder(Buffer.from(resp, 'utf-8'), { name: 'response.txt' });
-      SendTextToChannel(client, message, { files: [attachment] });
+    if(type == "text") {
+      if(resp.length >= 2000) {
+        const attachment = new AttachmentBuilder(Buffer.from(resp, 'utf-8'), { name: 'response.txt' });
+        SendTextToChannel(client, message, { files: [attachment] });
+      } else {
+        SendTextToChannel(client, message, resp);
+      }
     } else {
       SendTextToChannel(client, message, resp);
     }
 
-    SendTextToChannel(client, message, "\nThe response has been generated!\n");
+    if(type == "text") {
+      SendTextToChannel(client, message, "\nThe response has been generated!\n");
+    } else {
+      SendTextToChannel(client, message, "\nThe image has been generated!\n");
+    }
   }
 }
 
-async function DoExecCmds(client, message, cmd, prefix = "!") {
+async function DoExecCmds(client, message, cmd, prefix = "!", type = "text") {
   if(Array.isArray(cmd)) {
     for(let cmdv of cmd) {
-      await SendMsg(client, message, cmdv, prefix);
+      await SendMsg(client, message, cmdv, prefix, type);
     }
   } else {
-    await SendMsg(client, message, cmd, prefix);
+    await SendMsg(client, message, cmd, prefix, type);
   }
 }
 
@@ -102,7 +113,8 @@ client.on("messageCreate", async message => {
   
   try {
     await GetInitialCommands(client, message);
-    await DoExecCmds(client, message, ["chatbot", "cb", "chatbotimg", "cbimg"], "!");
+    await DoExecCmds(client, message, ["chatbot", "cb"], "!", "text");
+    await DoExecCmds(client, message, ["chatbotimg", "cbimg"], "!", "image");
   } catch(err) {
     console.log(err);
     await SendTextToChannelAsync(client, message, `\nError: ${err} \n`);
