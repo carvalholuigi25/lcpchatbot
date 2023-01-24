@@ -48,7 +48,7 @@ async function ask(prompt, type = "text") {
         answer += text;
       });
     } else {
-      answer = response.data.choices[0].text;
+      answer = response.data ? response.data.choices[0].text : null;
     }
   } else {
     if(prompt.indexOf("continue") !== -1) {
@@ -56,7 +56,7 @@ async function ask(prompt, type = "text") {
         answer += url;
       });
     } else {
-      answer = response.data.data[0].url;
+      answer = response.data ? response.data.data[0].url : null;
     }
   }
 
