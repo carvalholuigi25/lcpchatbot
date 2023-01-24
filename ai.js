@@ -52,7 +52,6 @@ async function ask(prompt, type = "text") {
     }
   } else {
     if(prompt.indexOf("continue") !== -1) {
-      answer = `\nContinuing: `;
       response.data.data.forEach(({ url }) => {
         answer += url;
       });
