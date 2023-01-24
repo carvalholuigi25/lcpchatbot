@@ -20,6 +20,7 @@ async function SendMsg(client, message, cmd, prefix = "!") {
   if (message.content.includes(cmd)) {
     const prompt = message.content.substring(cmd.length);
     const answer = await ask(prompt);
+    message.channel.send("\nThe response is being generating. Wait for it until its finished!\n");
     
     if(answer.length >= 2000) {
       const attachment = new AttachmentBuilder(Buffer.from(answer, 'utf-8'), { name: 'response.txt' });
