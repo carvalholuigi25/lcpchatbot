@@ -19,7 +19,7 @@ async function SendMsg(client, message, cmd, prefix = "!") {
 
   if (message.content.includes(cmd)) {
     const prompt = message.content.substring(cmd.length);
-    const type = ["cbimg", "chatbotimg"].includes(cmd) ? "image" : "text";
+    const type = cmd == "cbimg" || cmd == "chatbotimg" ? "image" : "text";
     const resp = await ask(prompt, type);
 
     SendTextToChannel(client, message, "\nThe response is being generating. Wait for it until its finished!\n");
