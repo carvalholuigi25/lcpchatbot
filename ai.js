@@ -41,16 +41,27 @@ async function ask(prompt, type = "text") {
   var answer = "";
   var response = await createResp(prompt, true, type);
   
-  if(prompt.indexOf("continue") !== -1) {
-    answer = `\nContinuing: `;
-    response.data.choices.forEach(({ text }) => {
-      answer += text;
-    });
+  if(type == "text") {
+    if(prompt.indexOf("continue") !== -1) {
+      answer = `\nContinuing: `;
+      response.data.choices.forEach(({ text }) => {
+        answer += text;
+      });
+    } else {
+      answer = response.data.choices[0].text;
+    }
   } else {
-    answer = response.data.choices[0].text;
+    if(prompt.indexOf("continue") !== -1) {
+      answer = `\nContinuing: `;
+      response.data.data.forEach(({ url }) => {
+        answer += url;
+      });
+    } else {
+      answer = response.data.data[0].url;
+    }
   }
 
-  return answer.trim();
+  return type == "text" ? answer.trim() : answer;
 }
 
 module.exports = {
