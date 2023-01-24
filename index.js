@@ -14,7 +14,7 @@ const client = new Client({
   ]
 });
 
-async function SendMsg(client, message, cmd, prefix = "!", type = "text") {
+async function SendMsg(client, message, cmd, prefix = "!", type) {
   cmd = !cmd.includes(prefix) ? prefix + cmd : cmd;
 
   if (message.content.includes(cmd)) {
@@ -34,7 +34,7 @@ async function SendMsg(client, message, cmd, prefix = "!", type = "text") {
   }
 }
 
-async function DoExecCmds(client, message, cmd, prefix = "!", type = "text") {
+async function DoExecCmds(client, message, cmd, prefix = "!", type) {
   if(Array.isArray(cmd)) {
     for(let cmdv of cmd) {
       await SendMsg(client, message, cmdv, prefix, type);
@@ -53,11 +53,6 @@ function SendTextToChannel(client, message, text) {
   client.channels.fetch(message.channelId).then(channel => channel.send(text));
 }
 
-// function SendTextToChannelSync(client, message, text) {
-  // message.channel.send(text);
-  // client.channels.fetch(message.channelId).then(channel => channel.send(text));
-// }
-
 function GetMyCommand(message, text = "!") {
   const commandBody = message.content.slice(text.length);
   const args = commandBody.split(' ');
@@ -67,27 +62,34 @@ function GetMyCommand(message, text = "!") {
 async function GetInitialCommands(client, message) { 
   const command = GetMyCommand(message, "!");
   
-  if(command === "help_chat") {
-    await SendTextToChannelAsync(client, message, `
-    Help:
-    !cb <msg> or !chatbot <msg> - to talk with chatbot and get info from it
-    !cbimg <msg> or !chatbotimg <msg> - to talk with chatbot and get image from it
-    !hello_chat - gets hello output message
-    !time_chat - gets time output message
-    !help_chat - get list of help commands`);
+  if(command === "") {
+    await SendTextToChannelAsync(client, message, `Error: The command ${command} has not been found! Please use !help_chat to see list of avaliable of commands.`);
+  } else {
+    if(command === "help_chat") {
+      await SendTextToChannelAsync(client, message, `
+      Help:
+      !cb <msg> or !chatbot <msg> - to talk with chatbot and get info from it
+      !img_chat <msg> - to talk with chatbot and get image from it
+      !hello_chat - gets hello output message
+      !time_chat - gets time output message
+      !help_chat - get list of help commands`);
+    } else if(command === "hello_chat") {
+      await SendTextToChannelAsync(client, message, `Hello ${message.author.username} from LCPChatBot!`);
+    } else if(command === "time_chat") {
+      await SendTextToChannelAsync(client, message, `The time is ${new Date().toString()}!`);
+    } else if(command === "img_chat") {
+      await DoExecCmds(client, message, ["img_chat"], "!", "image");
+    } else if(command === "chatbot" || command === "cb") {
+      await DoExecCmds(client, message, ["chatbot", "cb"], "!", "text");
+    }
   }
-  else if(command === "hello_chat") {
-    await SendTextToChannelAsync(client, message, `Hello ${message.author.username} from LCPChatBot!`);
-  }
-  else if(command === "time_chat") {
-    await SendTextToChannelAsync(client, message, `The time is ${new Date().toString()}!`);
-  }
+  
 }
 
 client.on("ready", () => {
   client.user.setPresence({
     activities: [{
-      name: 'LCPChatBot Playing !help_chat or !cb or !cbimg',
+      name: 'LCPChatBot Playing !help_chat',
       type: ActivityType.Playing
     }],
     status: 'online'
@@ -101,8 +103,6 @@ client.on("messageCreate", async message => {
   
   try {
     await GetInitialCommands(client, message);
-    await DoExecCmds(client, message, ["chatbot", "cb"], "!", "text");
-    await DoExecCmds(client, message, ["chatbotimg", "cbimg"], "!", "image");
   } catch(err) {
     console.log(err);
     await SendTextToChannelAsync(client, message, `\nError: ${err} \n`);

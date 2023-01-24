@@ -14,13 +14,15 @@ function isValIncase(astr, prompt) {
   return isVal;
 }
 
-async function createResp(prompt, isMaxTokens = false, type = "text") {
+async function createResp(prompt, isMaxTokens = false, type) {
   var modelobj = "";
-  if(modelobj.indexOf("image") !== -1) {
+
+  if(type == "image") {
     modelobj = await openai.createImage({
       prompt,
       n: 1,
-      size: "1024x1024"
+      size: "256x256",
+      response_format: "url"
     });
   } else {
     modelobj = await openai.createCompletion({
@@ -34,10 +36,11 @@ async function createResp(prompt, isMaxTokens = false, type = "text") {
       stop: null
     });
   }
+  
   return modelobj;
 }
 
-async function ask(prompt, type = "text") {
+async function ask(prompt, type) {
   var answer = "";
   var response = await createResp(prompt, true, type);
   
@@ -48,10 +51,11 @@ async function ask(prompt, type = "text") {
         answer += text;
       });
     } else {
-      answer = response.data.choices[0].text;
+      answer = response.data.choices != null ? response.data.choices[0].text : "";
     }
   } else {
     if(prompt.indexOf("continue") !== -1) {
+      answer = `\nContinuing: `;
       response.data.data.forEach(({ url }) => {
         answer += url;
       });
@@ -60,7 +64,7 @@ async function ask(prompt, type = "text") {
     }
   }
 
-  return type == "text" ? answer.trim() : answer;
+  return answer.trim();
 }
 
 module.exports = {
